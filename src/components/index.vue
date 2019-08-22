@@ -64,14 +64,7 @@ const filters = {
   completed: todos => todos.filter(todo => todo.done)
 };
 const defalutList = [
-  { text: "star this repository", done: false },
-  { text: "fork this repository", done: false },
-  { text: "follow author", done: false },
-  { text: "vue-element-admin", done: true },
-  { text: "vue", done: true },
-  { text: "element-ui", done: true },
-  { text: "axios", done: true },
-  { text: "webpack", done: true }
+  { text: "test", done: false }
 ];
 export default {
   components: { Todo },
@@ -85,7 +78,7 @@ export default {
       filters,
       // todos: JSON.parse(window.localStorage.getItem(STORAGE_KEY)) || defalutList
       todos: defalutList,
-      epaper: { epaperIP: "10.242.146.124", epaperPort: "6502" }
+      epaper: { epaperIP: "127.0.0.1", epaperPort: "6502" }
     };
   },
   computed: {
