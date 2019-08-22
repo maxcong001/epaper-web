@@ -63,9 +63,7 @@ const filters = {
   active: todos => todos.filter(todo => !todo.done),
   completed: todos => todos.filter(todo => todo.done)
 };
-const defalutList = [
-  { text: "test", done: false }
-];
+const defalutList = [{ text: "test", done: false }];
 export default {
   components: { Todo },
   filters: {
