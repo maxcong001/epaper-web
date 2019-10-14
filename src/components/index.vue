@@ -44,6 +44,7 @@
         <input class="set-ip" autocomplete="off" placeholder="127.0.0.1" @keyup.enter="setIP" />
         <a>epaper Port :</a>
         <input class="set-port" autocomplete="off" placeholder="6502" @keyup.enter="setPort" />
+        <button v-on:click="rotate">Rotate</button>
       </ul>
 
       <!-- <button class="clear-completed" v-show="todos.length > remaining" @click="clearCompleted">
@@ -76,7 +77,8 @@ export default {
       filters,
       // todos: JSON.parse(window.localStorage.getItem(STORAGE_KEY)) || defalutList
       todos: defalutList,
-      epaper: { epaperIP: "127.0.0.1", epaperPort: "6502" }
+      epaper: { epaperIP: "127.0.0.1", epaperPort: "6502" },
+      picRotate: 0
     };
   },
   computed: {
@@ -99,6 +101,7 @@ export default {
       );
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
       var obj = [];
+      obj.push({ rotate: picRotate });
       obj.push({
         rectangle: {
           colour: 4,
@@ -189,6 +192,9 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+    },
+    rotate(e) {
+      picRotate = (picRotate + 1) % 4;
     },
     setIP(e) {
       this.epaper.epaperIP = e.target.value;
