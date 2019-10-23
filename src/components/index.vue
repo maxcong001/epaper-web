@@ -76,15 +76,23 @@ function processTodo(obj) {
 }
 function processIPPort(obj) {
   console.log(document.getElementById("set-ip-id"));
-  console.log("epaper IP is : " + obj.epaperIP);
-  document.getElementById("set-ip-id");
-  //  .setAttribute("placeholder", obj.epaperIP);
-  // { epaperIP: "127.0.0.1", epaperPort: "6502" },
-  return { epaperIP: obj.epaperIP, epaperPort: "6502" };
+  if (obj) {
+    console.log("epaper IP is : " + obj.epaperIP);
+    document.getElementById("set-ip-id");
+    //  .setAttribute("placeholder", obj.epaperIP);
+    // { epaperIP: "127.0.0.1", epaperPort: "6502" },
+    return { epaperIP: obj.epaperIP, epaperPort: "6502" };
+  } else {
+    return { epaperIP: "127.0.0.1", epaperPort: "6502" };
+  }
 }
 function processRotate(obj) {
-  console.log("now rotate is : " + obj);
-  return obj;
+  if (obj) {
+    console.log("now rotate is : " + obj);
+    return obj;
+  } else {
+    return 0;
+  }
 }
 export default {
   components: { Todo },
