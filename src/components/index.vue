@@ -41,15 +41,12 @@
       </ul>
       <ul class="filters">
         <a>epaper IP :</a>
-        <input class="set-ip" autocomplete="off" placeholder="127.0.0.1" @keyup.enter="setIP" />
-        <a>epaper Port :</a>
-        <input class="set-port" autocomplete="off" placeholder="6502" @keyup.enter="setPort" />
-        <button v-on:click="rotate">Rotate</button>
+        <input id="set-ip-id" class="set-ip" :placeholder="epaper.epaperIP" @keyup.enter="setIP" />
+        <!--<a>epaper Port :</a>-->
+        <!--<input class="set-port" autocomplete="off" placeholder="6502" @keyup.enter="setPort" />-->
+        <a>rotate :</a>
+        <input class="rotate" :placeholder="picRotate" @keyup.enter="rotate" />
       </ul>
-
-      <!-- <button class="clear-completed" v-show="todos.length > remaining" @click="clearCompleted">
-        Clear completed
-      </button>-->
     </footer>
   </section>
 </template>
@@ -59,12 +56,36 @@ import axios from "axios";
 import Todo from "./Todo.vue";
 
 const STORAGE_KEY = "todos";
+const ipport_key = "ipport";
+const rotate_key = "rotate";
 const filters = {
   all: todos => todos,
   active: todos => todos.filter(todo => !todo.done),
   completed: todos => todos.filter(todo => todo.done)
 };
-const defalutList = [{ text: "test", done: false }];
+const defalutList = [
+  { text: "test", done: false },
+  { text: "test1", done: false }
+];
+function processTodo(obj) {
+  var list = [];
+  for (var item in obj) {
+    list.push(obj[item]);
+  }
+  return list;
+}
+function processIPPort(obj) {
+  console.log(document.getElementById("set-ip-id"));
+  console.log("epaper IP is : " + obj.epaperIP);
+  document.getElementById("set-ip-id");
+  //  .setAttribute("placeholder", obj.epaperIP);
+  // { epaperIP: "127.0.0.1", epaperPort: "6502" },
+  return { epaperIP: obj.epaperIP, epaperPort: "6502" };
+}
+function processRotate(obj) {
+  console.log("now rotate is : " + obj);
+  return obj;
+}
 export default {
   components: { Todo },
   filters: {
@@ -75,10 +96,12 @@ export default {
     return {
       visibility: "all",
       filters,
-      // todos: JSON.parse(window.localStorage.getItem(STORAGE_KEY)) || defalutList
-      todos: defalutList,
-      epaper: { epaperIP: "127.0.0.1", epaperPort: "6502" },
-      picRotate: 0
+      //defalutList,
+      todos: processTodo(JSON.parse(window.localStorage.getItem(STORAGE_KEY))), //defalutList,//JSON.parse(window.localStorage.getItem(STORAGE_KEY)),
+      epaper: processIPPort(
+        JSON.parse(window.localStorage.getItem(ipport_key))
+      ),
+      picRotate: processRotate(window.localStorage.getItem(rotate_key))
     };
   },
   computed: {
@@ -94,19 +117,15 @@ export default {
   },
   methods: {
     setLocalStorage() {
-      console.log(
-        (("setLocalStorage is called, ip is : " << this.epaper.epaperIP) <<
-          ", port is : ") <<
-          this.epaper.epaperPort
-      );
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
+
       var obj = [];
-      obj.push({ rotate: picRotate });
+      obj.push({ rotate: this.picRotate });
       obj.push({
         rectangle: {
           colour: 4,
           fill: true,
-          height: 30,
+          height: 26,
           position: [0, 0],
           wide: 640
         }
@@ -115,7 +134,7 @@ export default {
         rectangle: {
           colour: 4,
           fill: true,
-          height: 30,
+          height: 26,
           position: [0, 200],
           wide: 640
         }
@@ -124,7 +143,7 @@ export default {
         string: {
           colour: 3,
           content: "---Max's inprogress list---",
-          font: 24,
+          font: 20,
           position: [20, 3]
         }
       });
@@ -133,7 +152,7 @@ export default {
         string: {
           colour: 3,
           content: "---Max's to do list---",
-          font: 24,
+          font: 20,
           position: [20, 203]
         }
       });
@@ -150,8 +169,8 @@ export default {
             string: {
               colour: 0,
               content: doneindex + "." + todo.text,
-              font: 24,
-              position: [20, 30 * doneindex]
+              font: 20,
+              position: [20, 26 * doneindex]
             }
           });
         } else {
@@ -163,8 +182,8 @@ export default {
             string: {
               colour: 0,
               content: todoindex + "." + todo.text,
-              font: 24,
-              position: [20, 200 + 30 * todoindex]
+              font: 20,
+              position: [20, 200 + 26 * todoindex]
             }
           });
         }
@@ -194,10 +213,14 @@ export default {
         });
     },
     rotate(e) {
-      picRotate = (picRotate + 1) % 4;
+      this.picRotate = e.target.value % 4;
+      window.localStorage.setItem(rotate_key, this.picRotate);
+      console.log("now rotate is : " + this.picRotate);
     },
     setIP(e) {
       this.epaper.epaperIP = e.target.value;
+      this.epaper.epaperPort = "6502";
+      window.localStorage.setItem(ipport_key, JSON.stringify(this.epaper));
       //console.log("epaper IP is :" + this.epaper.epaperIP);
     },
     setPort(e) {
