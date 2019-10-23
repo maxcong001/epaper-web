@@ -118,79 +118,84 @@ export default {
   methods: {
     setLocalStorage() {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
-
+      var index = 0;
+      var todoindex = 0;
+      var doneindex = 0;
       var obj = [];
-      obj.push({ rotate: this.picRotate });
+      obj.push({ rotate: parseInt(this.picRotate) });
       obj.push({
         rectangle: {
           colour: 4,
           fill: true,
-          height: 26,
+          height: 24,
           position: [0, 0],
           wide: 640
         }
       });
       obj.push({
-        rectangle: {
-          colour: 4,
-          fill: true,
-          height: 26,
-          position: [0, 200],
-          wide: 640
-        }
-      });
-      obj.push({
         string: {
           colour: 3,
-          content: "---Max's inprogress list---",
+          content: "--Max's todo list--",
           font: 20,
-          position: [20, 3]
+          position: [0, 2]
         }
       });
 
-      obj.push({
-        string: {
-          colour: 3,
-          content: "---Max's to do list---",
-          font: 20,
-          position: [20, 203]
-        }
-      });
-
-      var todoindex = 0;
-      var doneindex = 0;
       this.todos.forEach(todo => {
-        if (todo.done) {
-          doneindex++;
-          if (doneindex > 5) {
-            return;
-          }
-          obj.push({
-            string: {
-              colour: 0,
-              content: doneindex + "." + todo.text,
-              font: 20,
-              position: [20, 26 * doneindex]
-            }
-          });
-        } else {
+        if (!todo.done) {
           todoindex++;
-          if (todoindex > 5) {
-            return;
-          }
+
           obj.push({
             string: {
               colour: 0,
               content: todoindex + "." + todo.text,
               font: 20,
-              position: [20, 200 + 26 * todoindex]
+              position: [10, 24 + 2 + 22 * (todoindex - 1)]
             }
           });
+        }
+      });
+
+      this.todos.forEach(todo => {
+        if (todo.done) {
+          doneindex++;
+
+          obj.push({
+            string: {
+              colour: 0,
+              content: doneindex + "." + todo.text,
+              font: 20,
+              position: [
+                10,
+                (24 + 2) * 2 + 22 * todoindex + 22 * (doneindex - 1)
+              ]
+            }
+          });
+        }
+      });
+
+      obj.push({
+        rectangle: {
+          colour: 4,
+          fill: true,
+          height: 24,
+          position: [0, 24 + 2 + 22 * todoindex],
+          wide: 640
+        }
+      });
+
+      obj.push({
+        string: {
+          colour: 3,
+          content: "---Max's done list---",
+          font: 20,
+          position: [0, 24 + 2 + 22 * todoindex + 2]
         }
       });
       //console.log("obj is : " + JSON.stringify(obj));
 
       var strtosend = JSON.stringify(obj);
+      console.log("send rest message: " + strtosend);
       const service = axios.create({
         headers: {
           "Content-Type": "application/json"
