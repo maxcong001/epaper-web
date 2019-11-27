@@ -129,13 +129,14 @@ export default {
       var index = 0;
       var todoindex = 0;
       var doneindex = 0;
+      var strFont = 24;
       var obj = [];
       obj.push({ rotate: parseInt(this.picRotate) });
       obj.push({
         rectangle: {
           colour: 4,
           fill: true,
-          height: 24,
+          height: strFont + 4,
           position: [0, 0],
           wide: 640
         }
@@ -144,7 +145,7 @@ export default {
         string: {
           colour: 3,
           content: "--Max's todo list--",
-          font: 20,
+          font: strFont,
           position: [0, 2]
         }
       });
@@ -157,8 +158,8 @@ export default {
             string: {
               colour: 0,
               content: todoindex + "." + todo.text,
-              font: 20,
-              position: [10, 24 + 2 + 22 * (todoindex - 1)]
+              font: strFont,
+              position: [5, strFont + 4 + 2 + (strFont + 2) * (todoindex - 1)]
             }
           });
         }
@@ -172,10 +173,13 @@ export default {
             string: {
               colour: 0,
               content: doneindex + "." + todo.text,
-              font: 20,
+              font: strFont,
               position: [
-                10,
-                (24 + 2) * 2 + 22 * todoindex + 22 * (doneindex - 1)
+                5,
+                (strFont + 4) * 2 +
+                  2 * 2 +
+                  (strFont + 2) * todoindex +
+                  (strFont + 2) * (doneindex - 1)
               ]
             }
           });
@@ -186,8 +190,8 @@ export default {
         rectangle: {
           colour: 4,
           fill: true,
-          height: 24,
-          position: [0, 24 + 2 + 22 * todoindex],
+          height: strFont + 4,
+          position: [0, strFont + 4 + 2 + (strFont + 2) * todoindex],
           wide: 640
         }
       });
@@ -196,8 +200,8 @@ export default {
         string: {
           colour: 3,
           content: "---Max's done list---",
-          font: 20,
-          position: [0, 24 + 2 + 22 * todoindex + 2]
+          font: strFont,
+          position: [0, strFont + 4 + 2 + (strFont + 2) * todoindex ]
         }
       });
       //console.log("obj is : " + JSON.stringify(obj));
