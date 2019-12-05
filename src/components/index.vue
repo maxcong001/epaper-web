@@ -201,7 +201,7 @@ export default {
           colour: 3,
           content: "---Max's done list---",
           font: strFont,
-          position: [0, strFont + 4 + 2 + (strFont + 2) * todoindex ]
+          position: [0, strFont + 4 + 2 + (strFont + 2) * todoindex + 2]
         }
       });
       //console.log("obj is : " + JSON.stringify(obj));
