@@ -215,7 +215,7 @@ export default {
       });
       service
         .post(
-          "http://" +
+          "https://" +
             this.epaper.epaperIP +
             ":" +
             this.epaper.epaperPort +
